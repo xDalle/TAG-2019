@@ -443,7 +443,7 @@ void GaleShapley(TipoGrafo *Grafo, int *HAB, int HABE[NEscolas][NVagas]){
 		//Caso a escola já possua professores	
         }else{
 			//Análogo ao anterior, com algumas peculiaridades
-            if(marcado[V1] == FALSE && vaga == 1 && HAB[V1] >= HABE[V2-100][0]){
+            if(marcado[V1] == FALSE && vaga == 1 && HAB[V1] >= HABE[V2-100][0] && ExisteAresta(V2, V1, Grafo) == FALSE){
                 Aux = PrimeiroListaAdj(&V2, Grafo); 
                 FimListaAdj = FALSE;
                 while(!FimListaAdj){
@@ -488,7 +488,7 @@ void GaleShapley(TipoGrafo *Grafo, int *HAB, int HABE[NEscolas][NVagas]){
                 }
             }
 			//Agora, para a segunda vaga, se existir
-            if(marcado[V1] == FALSE && vaga == 2 && HABE[V2-100][1] != 0 && HAB[V1] >= HABE[V2-100][1]){
+            if(marcado[V1] == FALSE && vaga == 2 && HABE[V2-100][1] != 0 && HAB[V1] >= HABE[V2-100][1] && ExisteAresta(V2, V1, Grafo) == FALSE){
 				//Verifica se a escola já possui segunda vaga preenchida e armazena em Peso2
                 Aux = PrimeiroListaAdj(&V2, Grafo);
                 FimListaAdj = FALSE;
@@ -657,6 +657,8 @@ int main(int argc, char *argv[]){
 	
 	//executa o algoritmo de Gale-Shapley
     GaleShapley(&Grafo, HABProfessores, HABEscolas);
+	//aperfeiçoa o lapidamento da relação escola/professor
+	GaleShapley(&Grafo, HABProfessores, HABEscolas);
 	
 	//Imprime as relações requeridas pelo projeto
     ImprimeRelacao(&Grafo);
